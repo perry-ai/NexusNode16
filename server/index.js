@@ -1,6 +1,7 @@
 const express = require('express')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
+const bodyParser = require('body-parser')
 const app = express()
 
 // Import and Set Nuxt.js options
@@ -19,6 +20,17 @@ async function start () {
     const builder = new Builder(nuxt)
     await builder.build()
   }
+
+  app.use(bodyParser.json())
+  // 新增 POST 接口 /createTag
+  // app.post('/createTag', (req, res) => {
+  //   console.log('Received parameters:', req.body) // 打印请求参数
+  //   res.status(200).json({ message: 'Success' }) // 返回成功响应
+  // })
+  // 引入并注册所有接口
+  console.log('Registering API routes...')
+  const apiRoutes = require('./api')
+  apiRoutes(app)
 
   // Give nuxt middleware to express
   app.use(nuxt.render)
