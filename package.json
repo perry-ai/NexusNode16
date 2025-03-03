@@ -17,6 +17,7 @@
     "element-ui": "^2.4.11",
     "express": "^4.16.4",
     "langchain": "^0.3.19",
+    "mysql2": "^2.3.0",
     "nuxt": "^2.0.0"
   },
   "devDependencies": {
