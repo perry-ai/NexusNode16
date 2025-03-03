@@ -13,18 +13,21 @@ async function createConnectionPools() {
   }
 }
 
-async function init(app) {
+(async () => {
   if (!isInitialized) {
     await createConnectionPools();
     isInitialized = true;
   }
+})();
 
+function registerRoutes(app) {
   // 示例 POST 接口，使用 db1 连接池执行 SELECT * FROM tableA
-  app.post('/api/selectTableA', async (req, res) => {
-    const db1 = connectionPools['db1']; // 获取 db1 的连接池
+  app.post('/selectTableA', async (req, res) => {
+    console.log('Received request ', req.body);
+    const db1 = connectionPools['par']; // 获取 db1 的连接池
 
     try {
-      const [rows] = await db1.execute('SELECT * FROM tableA');
+      const [rows] = await db1.execute('SELECT * from par.teller_info');
       res.json(rows);
     } catch (error) {
       console.error(error);
@@ -33,4 +36,4 @@ async function init(app) {
   });
 }
 
-module.exports = init;
+module.exports = registerRoutes;

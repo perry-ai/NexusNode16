@@ -3,18 +3,18 @@ module.exports = {
     databases: [
         {
           host: 'localhost',
-          user: 'root',
-          password: 'password',
-          database: 'db1',
+          user: 'cxwh',
+          password: 'cxwh@2025',
+          database: 'par',
           waitForConnections: true,
           connectionLimit: 10,
           queueLimit: 0
         },
         {
           host: 'localhost',
-          user: 'root',
-          password: 'password',
-          database: 'db2',
+          user: 'dvlp',
+          password: 'dvlp@2025',
+          database: 'flo',
           waitForConnections: true,
           connectionLimit: 10,
           queueLimit: 0
