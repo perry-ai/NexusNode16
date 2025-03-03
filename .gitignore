@@ -88,3 +88,6 @@ sw.*
 
 # Vim swap files
 *.swp
+
+# private config
+private.config.js
