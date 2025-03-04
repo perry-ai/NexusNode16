@@ -3,17 +3,13 @@
   <el-container class="llm-container">
     <el-main>
       <div class="conversation-list">
-        <el-card
-          v-for="(conversation, index) in conversations"
-          :key="index"
-          class="conversation-card"
-        >
+        <el-card v-for="(conversation, index) in conversations" :key="index" class="conversation-card">
           <div class="user-message">
             <div class="message-header">
               <div class="message-name">
                 <strong>用户:</strong>
               </div>
-              <img src="~/assets/perry.png" alt="User Avatar" class="avatar">
+              <img src="~/assets/perry.png" alt="User Avatar" class="avatar" />
             </div>
             <div class="message-content">
               {{ conversation.question }}
@@ -21,7 +17,7 @@
           </div>
           <div class="ai-message">
             <div class="message-header">
-              <img src="~/assets/ai.png" alt="AI Avatar" class="avatar">
+              <img src="~/assets/ai.png" alt="AI Avatar" class="avatar" />
               <div class="message-name">
                 <strong>DeepSeek AI:</strong>
               </div>
@@ -39,11 +35,7 @@
           <el-input v-model="form.apikey" placeholder="请输入 API Key"></el-input>
         </el-form-item>
         <el-form-item label="用户输入">
-          <el-input
-            v-model="form.userInput"
-            placeholder="请输入问题"
-            @keyup.enter.native="callModel"
-          ></el-input>
+          <el-input v-model="form.userInput" placeholder="请输入问题" @keyup.enter.native="callModel"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="callModel">提问</el-button>
@@ -55,59 +47,57 @@
 
 <script>
 export default {
-    data() {
-        return {
-            form: {
-                apikey: '',
-                userInput: ''
-            },
-            conversations: []
-        };
-    },
-    methods: {
-        async callModel() {
-            if (!this.form.userInput) {
-                this.$message.warning('请输入问题');
-                return;
-            }
-
-            try {
-                // 构造请求的 body
-                const requestBody = {
-                    model: 'deepseek-chat',
-                    messages: [
-                        {
-                            role: 'user',
-                            content: this.form.userInput
-                        }
-                    ],
-                    stream: false
-                };
-
-                // 使用 this.$axios 调用后端 API，并设置请求头
-                const response = await this.$axios.post(
-                    'https://api.deepseek.com/chat/completions',
-                    requestBody, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${this.form.apikey}` // 替换为你的访问令牌
-                    }
-                });
-
-                // 处理后端返回的响应数据
-                const responseData = response.data.choices ? response.data.choices[0].message.content : response.data;
-                this.conversations.push({
-                    question: this.form.userInput,
-                    response: responseData
-                });
-                this.form.userInput = '';
-            } catch (error) {
-                console.error(error);
-                this.$message.error('出错啦！');
-            }
-        }
+  data() {
+    return {
+      form: {
+        apikey: '',
+        userInput: '',
+      },
+      conversations: [],
     }
-};
+  },
+  methods: {
+    async callModel() {
+      if (!this.form.userInput) {
+        this.$message.warning('请输入问题')
+        return
+      }
+
+      try {
+        // 构造请求的 body
+        const requestBody = {
+          model: 'deepseek-chat',
+          messages: [
+            {
+              role: 'user',
+              content: this.form.userInput,
+            },
+          ],
+          stream: false,
+        }
+
+        // 使用 this.$axios 调用后端 API，并设置请求头
+        const response = await this.$axios.post('https://api.deepseek.com/chat/completions', requestBody, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.form.apikey}`, // 替换为你的访问令牌
+          },
+        })
+
+        // 处理后端返回的响应数据
+        const responseData = response.data.choices ? response.data.choices[0].message.content : response.data
+        this.conversations.push({
+          question: this.form.userInput,
+          response: responseData,
+        })
+        this.form.userInput = ''
+      } catch (error) {
+        console.error(error)
+        this.$message.error('出错啦！')
+      }
+    },
+  },
+}
 </script>
 
 <style scoped>

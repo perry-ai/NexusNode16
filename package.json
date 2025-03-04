@@ -4,7 +4,11 @@
   "description": "My terrific Nuxt.js project",
   "author": "perry-ai",
   "private": true,
+  "type": "module",
   "scripts": {
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "lint:fix": "eslint --ext .js,.vue --ignore-path .gitignore . --fix",
+    "format": "prettier --write .",
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "build": "nuxt build",
     "start": "cross-env NODE_ENV=production node server/index.js",
@@ -21,6 +25,16 @@
     "nuxt": "^2.0.0"
   },
   "devDependencies": {
-    "nodemon": "^1.18.9"
+    "@babel/eslint-parser": "^7.26.8",
+    "@babel/preset-env": "^7.26.9",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^10.0.2",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-nuxt": "^4.0.0",
+    "eslint-plugin-prettier": "^5.2.3",
+    "nodemon": "^1.18.9",
+    "prettier": "^3.5.3",
+    "prettier-plugin-vue": "^1.1.6"
   }
 }

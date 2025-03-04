@@ -28,15 +28,15 @@
 export default {
   data() {
     return {
-      activeIndex: '1'
+      activeIndex: '1',
     }
   },
   methods: {
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
-      this.activeIndex = key;
-    }
-  }
+      console.log(key, keyPath)
+      this.activeIndex = key
+    },
+  },
 }
 </script>
 
