@@ -1,4 +1,5 @@
 module.exports = {
+  // export default {
   trailingComma: 'es5', // 在对象、数组等结构的最后一个元素后面添加逗号
   tabWidth: 2, // 使用 2 个空格作为缩进
   semi: false, // 不使用分号结束语句

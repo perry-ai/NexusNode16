@@ -60,9 +60,7 @@ async function createTag(req, res) {
     console.log(`Push Result: ${pushResult}`)
 
     // All steps successful
-    res
-      .status(200)
-      .json({ result: `Tag ${tagName} created and pushed successfully` })
+    res.status(200).json({ result: `Tag ${tagName} created and pushed successfully` })
   } catch (error) {
     res.status(500).json({ result: `Error: ${error.message}` })
   }
