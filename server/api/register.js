@@ -21,7 +21,7 @@ async function registerRoutes(app, dir) {
       if (!registeredRoutes[filePath]) {
         // 如果未注册过，引入并注册路由
         const route = await import(new URL('file://' + filePath))
-        route.default(app)
+        await route.default(app)
         // 标记为已注册
         registeredRoutes[filePath] = true
       } else {
