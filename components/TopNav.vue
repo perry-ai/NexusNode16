@@ -1,14 +1,7 @@
 // components/TopNav.vue
 <template>
-  <el-menu
-    :default-active="activeIndex"
-    class="el-menu-demo"
-    mode="horizontal"
-    @select="handleSelect"
-    background-color="#545c64"
-    text-color="#fff"
-    active-text-color="#ffd04b"
-  >
+  <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect"
+    background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
     <el-menu-item index="1">
       <nuxt-link to="/">首页</nuxt-link>
     </el-menu-item>
@@ -20,6 +13,9 @@
     </el-menu-item>
     <el-menu-item index="4">
       <nuxt-link to="/LLM">LLM</nuxt-link>
+    </el-menu-item>
+    <el-menu-item index="5">
+      <nuxt-link to="/document">文档功能示例</nuxt-link>
     </el-menu-item>
   </el-menu>
 </template>

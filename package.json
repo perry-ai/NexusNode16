@@ -16,9 +16,12 @@
     "@nuxtjs/axios": "^5.3.6",
     "body-parser": "^1.20.1",
     "cross-env": "^5.2.0",
+    "docx": "^2.0.0",
     "element-ui": "^2.4.11",
+    "exceljs": "^4.0.0",
     "express": "^4.16.4",
     "langchain": "^0.3.19",
+    "multer": "^1.4.4-lts.1",
     "mysql2": "^2.3.0",
     "nuxt": "^2.0.0"
   },
