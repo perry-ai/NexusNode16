@@ -1,7 +1,7 @@
 import multer from 'multer'
 import ExcelJS from 'exceljs'
-import { Document, Paragraph, TextRun, LocalPacker } from 'docx' // 需要导入 Packer
 import { join } from 'path'
+import { Document, Packer, Paragraph, TextRun } from 'docx'
 import fs from 'fs'
 import { createReadStream } from 'fs' // 需要引入文件流
 import mytoolsConfig from '../../../mytools.config.js'
@@ -72,15 +72,35 @@ async function downloadExcel(req, res) {
 
 async function downloadDocx(req, res) {
   try {
-    // todo docx支持待修复
-    const doc = new Document()
-    const paragraph = new Paragraph('Some cool text heresdalmasldmkasdnjk.')
-    doc.addParagraph(paragraph)
+    // Documents contain sections, you can have multiple sections per document, go here to learn more about sections
+    // This simple example will only contain one section
+    const doc = new Document({
+      sections: [
+        {
+          properties: {},
+          children: [
+            new Paragraph({
+              children: [
+                new TextRun('Hello World'),
+                new TextRun({
+                  text: 'Foo Bar',
+                  bold: true,
+                }),
+                new TextRun({
+                  text: '\tHola is the best',
+                  bold: true,
+                }),
+              ],
+            }),
+          ],
+        },
+      ],
+    })
 
+    // 将异步操作改为 await 方式
+    const buffer = await Packer.toBuffer(doc)
     const tmpFile = join(tempDir, `template-${Date.now()}.docx`)
-    // 使用 LocalPacker 生成文件
-    const packer = new LocalPacker(doc)
-    await packer.pack(tmpFile) // 参数为文件路径
+    fs.writeFileSync(tmpFile, buffer) // 同步写入文件
 
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
     res.setHeader('Content-Disposition', 'attachment; filename=template.docx')
