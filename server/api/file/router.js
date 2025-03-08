@@ -21,13 +21,13 @@ const storage = multer.diskStorage({
 
 // 文件类型过滤（仅允许 Excel/Word）
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = /xlsx|xls|docx/
+  const allowedTypes = /xlsx|docx/
   const ext = file.originalname.split('.').pop().toLowerCase()
 
   if (allowedTypes.test(ext)) {
     cb(null, true)
   } else {
-    cb(new multer.MulterError('LIMIT_UNEXPECTED_FILE', '仅支持 Excel/Word 文件'), false)
+    cb(new multer.MulterError('LIMIT_UNEXPECTED_FILE', '仅支持 xlsx/docx 文件'), false)
   }
 }
 
@@ -111,33 +111,28 @@ async function downloadDocx(req, res) {
   }
 }
 
-// todo excel文件解析功能待修正
-async function handleUploadExcel(req, res) {
+async function uploadExcel(req, res) {
   try {
-    console.log('handleUploadExcel called with req.file.path:', req.file.path)
+    console.log('uploadExcel called with req.file.path:', req.file.path)
     const workbook = new ExcelJS.Workbook()
-    // 先判断req.file.path是否存在，如果不存在等1s
-    while (!fs.existsSync(req.file.path)) {
-      console.log('waiting for file to be created...')
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-    }
     await workbook.xlsx.readFile(req.file.path)
-    console.log('Workbook loaded successfully')
-    console.log('Workbook:', workbook)
-    console.log('workbook.xlsx', workbook.xlsx)
-    console.log('workbook._xlsx', workbook._xlsx)
 
-    const value = workbook.getWorksheet(0)?.getCell('A1')?.value
-    console.log('wbws', workbook?.worksheets)
+    // 遍历每个工作表
+    // workbook.eachSheet(function (worksheet, sheetId) {
+    //   console.log('Sheet ID:', sheetId)
+    //   console.log('Sheet name:', worksheet.name)
+    //   // ...
+    // })
+
+    const value = workbook.getWorksheet(1)?.getCell('A1')?.value
     console.log('Cell value:', value)
-    // console.log('Cell value:', value)
     res.json({ content: value })
   } catch (e) {
     res.status(500).send(e.message)
   }
 }
 
-async function handleUploadWord(req, res) {
+async function uploadWord(req, res) {
   res.json({ content: `文件大小：${req.file.size} 字节` })
 }
 
@@ -157,12 +152,12 @@ export default function (app) {
 
   // 上传 Excel
   app.post('/api/upload-excel', upload.single('file'), async (req, res) => {
-    await handleUploadExcel(req, res)
+    await uploadExcel(req, res)
   })
 
   // 上传 Word
   app.post('/api/upload-word', upload.single('file'), async (req, res) => {
-    await handleUploadWord(req, res)
+    await uploadWord(req, res)
   })
 
   console.log('file router init ...... OK')

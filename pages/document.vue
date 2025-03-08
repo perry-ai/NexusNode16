@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Excel上传 -->
-        <el-upload action="/api/upload-excel" :on-success="handleExcelSuccess" accept=".xlsx,.xls">
+        <el-upload action="/api/upload-excel" :on-success="handleExcelSuccess" accept=".xlsx">
             <el-button>上传Excel</el-button>
         </el-upload>
         <div v-if="excelA1">A1内容：{{ excelA1 }}</div>
