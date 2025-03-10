@@ -35,6 +35,8 @@
 
 ### 总体目标
 
+0. **通过项目学习JavaScript等内容**：
+
 1. **完成对 Git 功能的一些辅助功能**：
 
    - 根据要求创建 tag
@@ -72,7 +74,7 @@
 
   - [ ] ESLint 集成
   - [ ] license 确定
-  - [ ] readme.md 的完善
+  - [ ] readme.md 的完善，图标采用https://shields.io/
   - [ ] webpack 的集成
 
 - **前端基础的开发**：
@@ -120,3 +122,4 @@
 - antd
 - ECharts
 - github.io
+- electron
