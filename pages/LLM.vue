@@ -1,4 +1,3 @@
-// pages/LLM.vue
 <template>
   <el-container class="llm-container">
     <el-main>
@@ -19,7 +18,7 @@
             <div class="message-header">
               <img src="~/assets/ai.png" alt="AI Avatar" class="avatar" />
               <div class="message-name">
-                <strong>DeepSeek AI:</strong>
+                <strong>AI:</strong>
               </div>
             </div>
             <div class="message-content">
@@ -29,19 +28,26 @@
         </el-card>
       </div>
     </el-main>
-    <el-footer class="footer">
-      <el-form :model="form" inline>
-        <el-form-item label="API Key">
-          <el-input v-model="form.apikey" placeholder="请输入 API Key"></el-input>
-        </el-form-item>
-        <el-form-item label="用户输入">
-          <el-input v-model="form.userInput" placeholder="请输入问题" @keyup.enter.native="callModel"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="callModel">提问</el-button>
-        </el-form-item>
-      </el-form>
-    </el-footer>
+    <div class="workspace">
+      <!-- <el-form :model="form"> -->
+      <!-- <el-form-item inline> -->
+      <el-input v-model="form.userInput" placeholder="请输入问题" @keyup.enter.native="callModel"></el-input>
+      <div style="text-align: right;">
+        <el-button type="text" @click="toggleApiKeyInput">
+          <i class="el-icon-setting"></i>
+        </el-button>
+        <el-input v-show="showApiKey" v-model="form.apikey" placeholder="请输入 API Key" style="width: 200px;"></el-input>
+        <el-button type="primary" @click="callModel" :loading="loading" style="justify-content: flex-end">提问</el-button>
+        <!-- <div class="settings"> -->
+        <!-- 添加设置图标按钮 -->
+
+        <!-- 根据 showApiKey 控制 API Key 输入框的显示和隐藏 -->
+      </div>
+
+      <!-- </div> -->
+      <!-- </el-form-item> -->
+      <!-- </el-form> -->
+    </div>
   </el-container>
 </template>
 
@@ -54,17 +60,22 @@ export default {
         userInput: '',
       },
       conversations: [],
+      loading: false,
+      showApiKey: false, // 添加 showApiKey 状态
     }
   },
   methods: {
     async callModel() {
+      if (this.loading) return;
+
       if (!this.form.userInput) {
         this.$message.warning('请输入问题')
         return
       }
 
+      this.loading = true;
+
       try {
-        // 构造请求的 body
         const requestBody = {
           model: 'deepseek-chat',
           messages: [
@@ -75,16 +86,18 @@ export default {
           ],
           stream: false,
         }
-
-        // 使用 this.$axios 调用后端 API，并设置请求头
+        const headersParams = {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.form.apikey}`,
+        }
+        // 如果this.form.apikey非空，则不送Authorization
+        if (!this.form.apikey) {
+          delete headersParams.Authorization
+        }
         const response = await this.$axios.post('https://api.deepseek.com/chat/completions', requestBody, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${this.form.apikey}`, // 替换为你的访问令牌
-          },
+          headers: headersParams,
         })
 
-        // 处理后端返回的响应数据
         const responseData = response.data.choices ? response.data.choices[0].message.content : response.data
         this.conversations.push({
           question: this.form.userInput,
@@ -94,8 +107,13 @@ export default {
       } catch (error) {
         console.error(error)
         this.$message.error('出错啦！')
+      } finally {
+        this.loading = false;
       }
     },
+    toggleApiKeyInput() {
+      this.showApiKey = !this.showApiKey; // 切换 showApiKey 的值
+    }
   },
 }
 </script>
@@ -153,16 +171,12 @@ export default {
   height: 40px;
   border-radius: 50%;
   margin-right: 10px;
-  /* For user message */
   margin-left: 10px;
-  /* For AI message */
 }
 
 .message-name {
   margin-right: 10px;
-  /* For user message */
   margin-left: 10px;
-  /* For AI message */
 }
 
 .user-message .message-content {
@@ -175,11 +189,19 @@ export default {
   margin-top: 5px;
 }
 
-.footer {
-  height: 140px;
+.workspace {
+  height: 100px;
   padding: 10px;
   background-color: #f9fafc;
   border-top: 1px solid #ebeef5;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
 }
 
 .el-form-item {
