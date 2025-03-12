@@ -102,7 +102,7 @@ export default {
 
 <style scoped>
 .llm-container {
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -152,13 +152,17 @@ export default {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  margin-right: 10px; /* For user message */
-  margin-left: 10px; /* For AI message */
+  margin-right: 10px;
+  /* For user message */
+  margin-left: 10px;
+  /* For AI message */
 }
 
 .message-name {
-  margin-right: 10px; /* For user message */
-  margin-left: 10px; /* For AI message */
+  margin-right: 10px;
+  /* For user message */
+  margin-left: 10px;
+  /* For AI message */
 }
 
 .user-message .message-content {
@@ -172,6 +176,7 @@ export default {
 }
 
 .footer {
+  height: 140px;
   padding: 10px;
   background-color: #f9fafc;
   border-top: 1px solid #ebeef5;

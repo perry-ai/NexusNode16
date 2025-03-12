@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopNav />
+    <TopNav class="top-nav" />
     <div class="container">
       <nuxt />
     </div>
@@ -34,6 +34,12 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
+}
+
+body {
+  height: 100%;
+  /* 确保根元素传递高度 */
+  margin: 0;
 }
 
 *,
@@ -70,5 +76,20 @@ html {
 .button--grey:hover {
   color: #fff;
   background-color: #35495e;
+}
+
+.top-nav {
+  height: 60px;
+  /* 固定高度 */
+  background-color: #fff;
+  /* 可选：背景色 */
+  border-bottom: 1px solid #ebeef5;
+  /* 可选：底部边框 */
+}
+
+.container {
+  height: calc(100vh - 60px);
+  /* height: 100vh; */
+  /* 确保父容器传递高度 */
 }
 </style>
