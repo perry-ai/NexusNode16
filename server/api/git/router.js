@@ -1,6 +1,7 @@
 import { simpleCreateTag } from './git-use-simple.js'
 import { createTag } from './git-use-child-process.js'
 
+// 示例：非自动扫描注册，采用具体引入进行路由注册
 export default function (app) {
   console.log('git router init ...')
   // 采用child_process进行git操作的示例

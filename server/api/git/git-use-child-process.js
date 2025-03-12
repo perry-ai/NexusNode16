@@ -19,6 +19,12 @@ function executeCommand(command, cwd) {
   })
 }
 
+/**
+ * 示例：采用child_process库进行git操作
+ * 注意：运行环境需要提前完备git、ssh等配置
+ * @param {*} req 请求
+ * @param {*} res 响应
+ */
 export async function createTag(req, res) {
   try {
     if (!req.body || typeof req.body !== 'object') {
@@ -41,24 +47,19 @@ export async function createTag(req, res) {
       .slice(0, 14)
     const tempProName = 'gitrepo' + timestamp
     const tempProPath = path.join(targetDir, tempProName)
-    // Step 1: Clone the repository
     const cloneCommand = `git clone -b ${branch} ${repo} ${tempProName}`
     const cloneResult = await executeCommand(cloneCommand, targetDir)
     console.log(`Clone Result: ${cloneResult}`)
-
-    // Step 2: Create a tag with a timestamp
 
     const tagName = `test-${timestamp}`
     const tagCommand = `git tag ${tagName}`
     const tagResult = await executeCommand(tagCommand, tempProPath)
     console.log(`Tag Result: ${tagResult}`)
 
-    // Step 3: Push the tag to the remote repository
     const pushCommand = `git push origin ${tagName}`
     const pushResult = await executeCommand(pushCommand, tempProPath)
     console.log(`Push Result: ${pushResult}`)
 
-    // All steps successful
     res.status(200).json({ result: `Tag ${tagName} created and pushed successfully` })
   } catch (error) {
     res.status(500).json({ result: `Error: ${error.message}` })

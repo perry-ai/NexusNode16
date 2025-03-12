@@ -4,7 +4,7 @@ import { getColumnMetadata, getConnectionPool } from '../db-utils.js'
 
 export const table = 'par.teller_info' // 表名（带schema）
 
-// 路由定义和处理逻辑
+// 路由定义和处理逻辑，此处定义注册参数和处理方法
 export const routes = [
   {
     method: 'post',
@@ -23,6 +23,7 @@ export const routes = [
 // 查询操作
 async function selectQuery(req, res) {
   try {
+    // 可选校验
     //     validateRequestBody(req)
     //     validateEnv(req, mytoolsConfig.databases)
 
@@ -31,6 +32,7 @@ async function selectQuery(req, res) {
 
     validateFields(req, columns)
 
+    // 获取连接
     const pool = getConnectionPool(env)
     const whereClause = Object.keys(filters)
       .map((col, i) => `${col} = ?`)

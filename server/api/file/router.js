@@ -8,7 +8,7 @@ import mytoolsConfig from '../../../mytools.config.js'
 
 const tempDir = mytoolsConfig.tempDir
 
-// === Multer 配置 ===
+// === Multer 配置 示例===
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, tempDir) // 使用配置目录
@@ -38,19 +38,16 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB 限制
 })
 
-// === 路由处理函数 ===
+/**
+ * 示例：创建excel文件并返回文件
+ * @param {*} req
+ * @param {*} res
+ */
 async function downloadExcel(req, res) {
   try {
     const workbook = new ExcelJS.Workbook()
     const worksheet = workbook.addWorksheet('Sheet1')
 
-    // 设置样式
-    // const boldFont = workbook.addFont({
-    //   name: '宋体',
-    //   family: 2,
-    //   size: 14,
-    //   bold: true,
-    // })
     worksheet.getCell('B1').value = 'Hola excel'
     worksheet.getCell('B1').font = {
       name: '宋体',
@@ -70,6 +67,11 @@ async function downloadExcel(req, res) {
   }
 }
 
+/**
+ * 示例：创建word文件并返回文件
+ * @param {*} req
+ * @param {*} res
+ */
 async function downloadDocx(req, res) {
   try {
     // Documents contain sections, you can have multiple sections per document, go here to learn more about sections
@@ -111,18 +113,16 @@ async function downloadDocx(req, res) {
   }
 }
 
+/**
+ * 示例：读取上传的 excel 文件
+ * @param {*} req
+ * @param {*} res
+ */
 async function uploadExcel(req, res) {
   try {
     console.log('uploadExcel called with req.file.path:', req.file.path)
     const workbook = new ExcelJS.Workbook()
     await workbook.xlsx.readFile(req.file.path)
-
-    // 遍历每个工作表
-    // workbook.eachSheet(function (worksheet, sheetId) {
-    //   console.log('Sheet ID:', sheetId)
-    //   console.log('Sheet name:', worksheet.name)
-    //   // ...
-    // })
 
     const value = workbook.getWorksheet(1)?.getCell('A1')?.value
     console.log('Cell value:', value)
@@ -132,6 +132,11 @@ async function uploadExcel(req, res) {
   }
 }
 
+/**
+ * 示例：读取上传的 word 文件
+ * @param {*} req
+ * @param {*} res
+ */
 async function uploadWord(req, res) {
   res.json({ content: `文件大小：${req.file.size} 字节` })
 }

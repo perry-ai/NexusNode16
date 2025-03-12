@@ -7,6 +7,7 @@ const connectionPools = {}
 let isInitialized = false
 const DBConfigs = mytoolsConfig.databases
 
+// 创建连接池
 async function createConnectionPools() {
   for (const DBConfig of DBConfigs) {
     const pool = await mysql.createPool(DBConfig.config)
@@ -15,18 +16,13 @@ async function createConnectionPools() {
   }
 }
 
+// 初始化连接池
 ;(async () => {
   if (!isInitialized) {
     await createConnectionPools()
     isInitialized = true
   }
 })()
-
-export async function initializeConnectionPools() {
-  if (isInitialized) return
-  await createConnectionPools()
-  isInitialized = true
-}
 
 // 动态获取列名元数据
 export async function getColumnMetadata(tableName, env) {

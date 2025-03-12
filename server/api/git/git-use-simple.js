@@ -3,6 +3,13 @@ import path from 'path'
 import mytoolsConfig from '../../../mytools.config.js' // 根据实际路径调整
 const targetDir = mytoolsConfig.tempDir
 
+/**
+ * 示例：采用simple-git库进行git操作
+ * 注意：运行环境需要提前完备git、ssh等配置
+ * @param {*} repoURL 目标仓库路径
+ * @param {*} branch 分支名
+ * @returns
+ */
 export async function simpleCreateTag(repoURL, branch) {
   const git = simpleGit()
   try {

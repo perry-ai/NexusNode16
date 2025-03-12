@@ -1,4 +1,4 @@
-// validate.js
+// validate.js 示例：数据库校验工具类
 const SQL_SAFE_REGEX = /^[a-zA-Z0-9_\-@. ]+$/
 
 export function validateRequestBody(req) {
