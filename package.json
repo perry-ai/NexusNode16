@@ -1,7 +1,7 @@
 {
-  "name": "nuxt0302",
+  "name": "mytools",
   "version": "1.0.0",
-  "description": "My terrific Nuxt.js project",
+  "description": "My tools Nuxt.js project",
   "author": "perry-ai",
   "private": true,
   "type": "module",
