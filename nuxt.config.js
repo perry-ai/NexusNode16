@@ -1,6 +1,7 @@
 // module.exports = {
 export default {
-  mode: 'universal',
+  // mode: 'universal',
+  mode: 'spa',
   telemetry: false, //用于禁止调研提示
   /*
    ** Headers of the page
