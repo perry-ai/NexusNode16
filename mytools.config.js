@@ -1,3 +1,5 @@
+import config from './private.config.js'
+
 export default {
   tempDir: 'D://temp', // 临时文件存放目录
   databases: [
@@ -26,4 +28,6 @@ export default {
       },
     },
   ], // 数据库配置
+  // 读取private.config.js
+  apiKey: config?.apiKey ? config.apiKey : '',
 }

@@ -1,7 +1,8 @@
 // module.exports = {
 export default {
   // mode: 'universal',
-  mode: 'spa',
+  // mode: 'spa',
+  ssr: false,
   telemetry: false, //用于禁止调研提示
   /*
    ** Headers of the page
@@ -46,7 +47,9 @@ export default {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    baseURl: 'https://localhost:3000',
+  },
   /*
    ** Build configuration
    */

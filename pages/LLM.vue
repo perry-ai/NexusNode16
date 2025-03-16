@@ -77,28 +77,16 @@ export default {
 
       try {
         const requestBody = {
-          model: 'deepseek-chat',
-          messages: [
-            {
-              role: 'user',
-              content: this.form.userInput,
-            },
-          ],
-          stream: false,
+          content: this.form.userInput,
         }
         const headersParams = {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.form.apikey}`,
         }
-        // 如果this.form.apikey非空，则不送Authorization
-        if (!this.form.apikey) {
-          delete headersParams.Authorization
-        }
-        const response = await this.$axios.post('https://api.deepseek.com/chat/completions', requestBody, {
+        const response = await this.$axios.post('/transfer/deepseek', requestBody, {
           headers: headersParams,
         })
 
-        const responseData = response.data.choices ? response.data.choices[0].message.content : response.data
+        const responseData = response?.data?.result || '出错啦！'
         this.conversations.push({
           question: this.form.userInput,
           response: responseData,
