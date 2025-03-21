@@ -62,6 +62,84 @@ export async function revertToCommit(repoPath, commitHash) {
   return git.push('origin', 'HEAD', {'--force': true})
 }
 
+// 比较两个版本间的提交差异
+export async function compareCommitDiffs(repoPath, fromRef, toRef, limit = 50) {
+  const git = simpleGit(repoPath)
+  try {
+    const log = await git.log({
+      from: fromRef,
+      to: toRef,
+      maxCount: limit,
+      symmetric: false
+    })
+    return log.all.map(commit => ({
+      id: commit.hash,
+      author: commit.author_name,
+      email: commit.author_email,
+      date: new Date(commit.date),
+      message: commit.message,
+      parent: commit.parents
+    }))
+  } catch (error) {
+    console.error('提交历史比较失败:', error.message)
+    return []
+  }
+}
+
+// 比较两个版本间的文件差异（带行数统计）
+export async function compareFileDiffs(repoPath, fromRef, toRef) {
+  const git = simpleGit(repoPath)
+  try {
+    // 同时获取变更状态和行数统计
+    const [statusDiff, numstatDiff] = await Promise.all([
+      git.diff([`${fromRef}..${toRef}`, '--name-status']),
+      git.diff([`${fromRef}..${toRef}`, '--numstat'])
+    ])
+    
+    // 构建复合结果
+    const statusMap = parseStatusDiff(statusDiff)
+    return parseNumstatDiff(numstatDiff).map(item => ({
+      ...item,
+      status: statusMap.get(item.file) || '修改' // 默认状态为修改
+    }))
+  } catch (error) {
+    console.error('文件差异比较失败:', error.message)
+    return []
+  }
+
+  // 解析 --name-status 输出
+  function parseStatusDiff(raw) {
+    return new Map(
+      raw.split('\n')
+        .filter(Boolean)
+        .map(line => {
+          const [code, file] = line.split('\t')
+          return [file, getStatusText(code)]
+        })
+    )
+  }
+
+  // 解析 --numstat 输出
+  function parseNumstatDiff(raw) {
+    return raw.split('\n')
+      .filter(Boolean)
+      .map(line => {
+        const [add, del, ...fileParts] = line.split('\t')
+        return {
+          file: fileParts.join('\t'), // 处理含空格的文件名
+          changes: {
+            added: add === '-' ? 0 : parseInt(add) || 0,
+            deleted: del === '-' ? 0 : parseInt(del) || 0
+          }
+        }
+      })
+  }
+
+  function getStatusText(code) {
+    const statusMap = { A: '新增', D: '删除', M: '修改', R: '重命名', C: '复制' }
+    return statusMap[code[0]] || '未知变更'
+  }
+}
 /**
  * 示例：采用simple-git库进行git操作
  * 注意：运行环境需要提前完备git、ssh等配置
