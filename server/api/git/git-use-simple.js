@@ -1,7 +1,14 @@
 import simpleGit from 'simple-git'
 import path from 'path'
 import mytoolsConfig from '../../../mytools.config.js' // 根据实际路径调整
-const targetDir = mytoolsConfig.tempDir
+
+
+// 克隆远端仓库到指定目录
+export async function cloneRepo(repoURL, branchName, targetDir) {
+  const git = simpleGit()
+  await git.clone(repoURL, targetDir, { '--branch': branchName })
+  return targetDir
+}
 
 // 提交更改
 export async function commitChanges(repoPath, message, files = ['.']) {
@@ -21,8 +28,8 @@ export async function createBranch(repoPath, branchName) {
 // 切换分支（支持远程分支）
 export async function checkoutBranch(repoPath, branchName, isRemote = false) {
   const git = simpleGit(repoPath)
-  return isRemote ? 
-    git.checkout(`remotes/origin/${branchName}`) : 
+  return isRemote ?
+    git.checkout(`remotes/origin/${branchName}`) :
     git.checkout(branchName)
 }
 
@@ -35,7 +42,7 @@ export async function mergeBranch(repoPath, sourceBranch, options = { '--no-ff':
 // 拉取更新（带变基选项）
 export async function pullUpdates(repoPath, branchName, rebase = true) {
   const git = simpleGit(repoPath)
-  return rebase ? 
+  return rebase ?
     git.pull('origin', branchName, { '--rebase': 'true' }) :
     git.pull('origin', branchName)
 }
@@ -59,7 +66,7 @@ export async function getCommitHistory(repoPath, limit = 10) {
 export async function revertToCommit(repoPath, commitHash) {
   const git = simpleGit(repoPath)
   await git.reset(['--hard', commitHash])
-  return git.push('origin', 'HEAD', {'--force': true})
+  return git.push('origin', 'HEAD', { '--force': true })
 }
 
 // 比较两个版本间的提交差异
@@ -95,7 +102,7 @@ export async function compareFileDiffs(repoPath, fromRef, toRef) {
       git.diff([`${fromRef}..${toRef}`, '--name-status']),
       git.diff([`${fromRef}..${toRef}`, '--numstat'])
     ])
-    
+
     // 构建复合结果
     const statusMap = parseStatusDiff(statusDiff)
     return parseNumstatDiff(numstatDiff).map(item => ({
@@ -148,6 +155,7 @@ export async function compareFileDiffs(repoPath, fromRef, toRef) {
  * @returns
  */
 export async function simpleCreateTag(repoURL, branch) {
+  const targetDir = mytoolsConfig.tempDir
   const git = simpleGit()
   try {
     // yyyyMMddHHmmss形式的时间戳
@@ -177,4 +185,22 @@ export async function simpleCreateTag(repoURL, branch) {
     console.error('Git操作失败:', error.message)
   } finally {
   }
+}
+
+
+async function test() {
+  const targetDir = mytoolsConfig.tempDir
+  const timestamp = new Date()
+    .toISOString()
+    .replace(/[^0-9]/g, '')
+    .slice(0, 14)
+  const tempProName = 'gitrepo' + timestamp
+  const tempProPath = path.join(targetDir, tempProName)
+  await cloneRepo('git@github.com:perry-ai/MyTools.git', 'main', tempProPath)
+
+
+}
+
+if (require.main === module) {
+  await test()
 }
