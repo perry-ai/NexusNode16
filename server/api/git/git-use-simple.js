@@ -197,11 +197,14 @@ async function test() {
   const tempProName = 'gitrepo' + timestamp
   const tempProPath = path.join(targetDir, tempProName)
   await cloneRepo('git@github.com:perry-ai/MyTools.git', 'main', tempProPath)
-  await compareCommitDiffs(tempProPath, )
+  // 先检出目标分支
+  const comlog1 = await compareCommitDiffs(tempProPath, 'origin/test-init', 'origin/main', 100)
 
+  console.log("comlog1-msg:"+JSON.stringify(comlog1.map(item => item.message)))
+
+  const filedif = await compareFileDiffs(tempProPath, 'origin/test-init', 'origin/main')
+  console.log("filedif:"+JSON.stringify(filedif))
 
 }
 
-if (require.main === module) {
-  await test()
-}
+// await test()
