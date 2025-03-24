@@ -197,6 +197,7 @@ async function test() {
   const tempProName = 'gitrepo' + timestamp
   const tempProPath = path.join(targetDir, tempProName)
   await cloneRepo('git@github.com:perry-ai/MyTools.git', 'main', tempProPath)
+  await compareCommitDiffs(tempProPath, )
 
 
 }
