@@ -3,6 +3,7 @@ import consola from 'consola'
 import { Nuxt, Builder } from 'nuxt'
 import bodyParser from 'body-parser'
 import register from './api/register.js'
+import { initScheduler } from './schedule/scheduler.js'
 
 const app = express()
 
@@ -31,6 +32,9 @@ async function start() {
 
   // Give nuxt middleware to express
   app.use(nuxt.render)
+
+  // 初始化所有定时任务
+  initScheduler()
 
   // Listen the server
   app.listen(port, host)
