@@ -62,6 +62,46 @@ async function gitTest() {
 }
 
 
+/**
+ * 从JSON数据生成Excel文件
+ * @param {Object} data 数据对象
+ * @param {string} outputPath 输出路径
+ */
+export async function generateExcelFromJSON(data, outputPath) {
+  try {
+    const workbook = new ExcelJS.Workbook()
+    
+    // 添加每个工作表
+    data.sheets.forEach(sheet => {
+      const worksheet = workbook.addWorksheet(sheet.name)
+      
+      // 添加表头
+      worksheet.addRow(sheet.headers)
+      
+      // 添加数据行
+      sheet.rows.forEach(row => {
+        worksheet.addRow(row)
+      })
+      
+      // 设置表头样式
+      const headerRow = worksheet.getRow(1)
+      headerRow.font = { bold: true }
+      headerRow.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFD3D3D3' }
+      }
+    })
+    
+    // 写入文件
+    await workbook.xlsx.writeFile(outputPath)
+    return true
+  } catch (error) {
+    console.error('生成Excel失败:', error)
+    throw error
+  }
+}
+
 async function main() {
     
     const res = await gitTest()

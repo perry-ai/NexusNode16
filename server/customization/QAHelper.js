@@ -259,7 +259,7 @@ export class GitBranchAnalyzer {
     })
 
     // 4. 详细变更
-    this.addDetailSheet(workbook)
+    await this.addDetailSheet(workbook)
 
     // 保存文件
     const reportPath = path.join(tempDir, `code_quality_report_${Date.now()}.xlsx`)
@@ -270,7 +270,7 @@ export class GitBranchAnalyzer {
   /**
    * 添加详细变更工作表
    */
-  addDetailSheet(workbook) {
+  async addDetailSheet(workbook) {
     const sheet = workbook.addWorksheet('详细变更')
 
     sheet.columns = [
@@ -282,25 +282,64 @@ export class GitBranchAnalyzer {
       { header: '文件', key: 'file', width: 40 },
       { header: '变更类型', key: 'changeType', width: 15 },
       { header: '新增行', key: 'added', width: 10 },
-      { header: '删除行', key: 'deleted', width: 10 }
+      { header: '删除行', key: 'deleted', width: 10 },
+      { header: '整体差异', key: 'totalDiff', width: 50 }
     ]
 
     for (const branch of this.analysisResult.branches) {
-      for (let i = 0; i < branch.commits.length; i++) {
-        const commit = branch.commits[i]
-        const file = branch.files[i] || {}
+      // 获取分支与主干的整体差异
+      const totalDiffs = await compareFileDiffs(
+        this.repoPath,
+        `origin/${this.mainBranch}`,
+        `origin/${branch.branch}`
+      )
+      
+      const totalAdded = totalDiffs.reduce((sum, file) => sum + file.changes.added, 0)
+      const totalDeleted = totalDiffs.reduce((sum, file) => sum + file.changes.deleted, 0)
+      
+      // 生成文件差异列表
+      const fileDiffs = totalDiffs.map(file => 
+        `${file.file} (${file.status}): +${file.changes.added}/-${file.changes.deleted}`
+      ).join('\n')
+      
+      const totalDiffText = `总计: +${totalAdded}/-${totalDeleted}\n文件差异:\n${fileDiffs}`
 
-        sheet.addRow({
-          branch: branch.branch,
-          commitId: commit.id.slice(0, 7),
-          author: commit.author,
-          date: commit.date.toISOString(),
-          message: commit.message.split('\n')[0],
-          file: file.file || '',
-          changeType: file.status || '修改',
-          added: file.changes?.added || 0,
-          deleted: file.changes?.deleted || 0
-        })
+      let firstRowIndex = null
+      
+      // 遍历每个提交的所有文件变更
+      for (const commit of branch.commits) {
+        if (!commit.files || commit.files.length === 0) continue
+        
+        for (const file of commit.files) {
+          const row = sheet.addRow({
+            branch: branch.branch,
+            commitId: commit.id.slice(0, 7),
+            author: commit.author,
+            date: commit.date.toISOString(),
+            message: commit.message.split('\n')[0],
+            file: file.file,
+            changeType: file.status,
+            added: file.changes?.added || 0,
+            deleted: file.changes?.deleted || 0,
+            totalDiff: totalDiffText
+          })
+          
+          if (firstRowIndex === null) {
+            firstRowIndex = row.number
+          }
+        }
+      }
+
+      // 合并整体差异单元格
+      if (firstRowIndex !== null) {
+        const lastRowIndex = sheet.rowCount
+        sheet.mergeCells(`J${firstRowIndex}:J${lastRowIndex}`)
+        
+        // 设置自动换行
+        sheet.getCell(`J${firstRowIndex}`).alignment = { 
+          wrapText: true,
+          vertical: 'top'
+        }
       }
     }
   }

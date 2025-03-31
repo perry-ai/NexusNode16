@@ -64,4 +64,38 @@ describe('Git操作单元测试', () => {
     await git.pullUpdates(repoPath, 'main', true);
     expect(mockGit.pull).toHaveBeenCalledWith('origin', 'main', { '--rebase': 'true' });
   });
+
+  // 测试compareCommitDiffs方法
+  test('compareCommitDiffs应返回包含文件变更的提交历史', async () => {
+    const repoPath = '/mock/repo';
+    const mockLog = {
+      all: [{
+        hash: 'commit1',
+        author_name: 'test',
+        author_email: 'test@example.com',
+        date: '2025-01-01',
+        message: 'test commit',
+        parents: ['parent1']
+      }]
+    };
+    const mockShow = 'A\tfile1.txt\nM\tfile2.txt\n';
+    
+    mockGit.log.mockResolvedValue(mockLog);
+    mockGit.show.mockResolvedValue(mockShow);
+
+    const result = await git.compareCommitDiffs(repoPath, 'from', 'to');
+    
+    expect(result).toEqual([{
+      id: 'commit1',
+      author: 'test',
+      email: 'test@example.com',
+      date: new Date('2025-01-01'),
+      message: 'test commit',
+      parent: ['parent1'],
+      files: [
+        { file: 'file1.txt', status: '新增' },
+        { file: 'file2.txt', status: '修改' }
+      ]
+    }]);
+  });
 });

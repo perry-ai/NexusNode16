@@ -79,18 +79,41 @@ export async function compareCommitDiffs(repoPath, fromRef, toRef, limit = 50) {
       maxCount: limit,
       symmetric: false
     })
-    return log.all.map(commit => ({
-      id: commit.hash,
-      author: commit.author_name,
-      email: commit.author_email,
-      date: new Date(commit.date),
-      message: commit.message,
-      parent: commit.parents
+    
+    // 获取每个提交的文件变更
+    const commitsWithDiffs = await Promise.all(log.all.map(async commit => {
+      const diff = await git.show([commit.hash, '--name-status'])
+      const fileChanges = diff.split('\n')
+        .filter(line => line.match(/^[ADMR]\s+/))
+        .map(line => {
+          const [code, file] = line.split('\t')
+          return {
+            file,
+            status: getStatusText(code)
+          }
+        })
+      
+      return {
+        id: commit.hash,
+        author: commit.author_name,
+        email: commit.author_email,
+        date: new Date(commit.date),
+        message: commit.message,
+        parent: commit.parents,
+        files: fileChanges
+      }
     }))
+    
+    return commitsWithDiffs
   } catch (error) {
     console.error('提交历史比较失败:', error.message)
     return []
   }
+}
+
+function getStatusText(code) {
+  const statusMap = { A: '新增', D: '删除', M: '修改', R: '重命名', C: '复制' }
+  return statusMap[code[0]] || '未知变更'
 }
 
 // 比较两个版本间的文件差异（带行数统计）
