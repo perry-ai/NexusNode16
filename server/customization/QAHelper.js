@@ -261,6 +261,17 @@ export class GitBranchAnalyzer {
     // 4. 详细变更
     await this.addDetailSheet(workbook)
 
+    // 5. 结果源码
+    const resultSheet = workbook.addWorksheet('结果源码')
+    resultSheet.getCell('A1').value = {
+      richText: [
+        { font: { bold: true, size: 14 }, text: '分析结果JSON:' }
+      ]
+    }
+    resultSheet.getCell('A2').value = JSON.stringify(this.analysisResult, null, 2)
+    resultSheet.getColumn('A').width = 100
+    resultSheet.getCell('A2').alignment = { wrapText: true }
+
     // 保存文件
     const reportPath = path.join(tempDir, `code_quality_report_${Date.now()}.xlsx`)
     await workbook.xlsx.writeFile(reportPath)
@@ -349,17 +360,21 @@ export class GitBranchAnalyzer {
    */
   async runAnalysis() {
     try {
+      console.log('开始执行Git仓库克隆:', new Date())
       // 1. 克隆仓库
       await this.cloneRepository()
 
+      console.log('获取领先分支信息:', new Date())
       // 2. 获取领先分支
       const branches = await this.getAheadBranches()
 
+      console.log('开始分析各个分支情况:', new Date())
       // 3. 分析每个分支
       for (const branch of branches) {
         await this.analyzeBranch(branch)
       }
 
+      console.log('生成分析报告:', new Date())
       // 4. 生成报告
       const reportPath = await this.generateExcelReport()
 
@@ -381,19 +396,19 @@ export class GitBranchAnalyzer {
 /**
  * 使用示例
  */
-async function exampleUsage() {
-  const analyzer = new GitBranchAnalyzer('git@github.com:perry-ai/MyTools.git')
-  const result = await analyzer.runAnalysis()
+// async function exampleUsage() {
+//   const analyzer = new GitBranchAnalyzer('git@github.com:perry-ai/MyTools.git')
+//   const result = await analyzer.runAnalysis()
   
-  if (result.success) {
-    console.log('分析完成，报告路径:', result.reportPath)
-    console.log('分析结果:', JSON.stringify(result.analysisResult, null, 2))
-  } else {
-    console.error('分析失败:', result.error)
-  }
-}
+//   if (result.success) {
+//     console.log('分析完成，报告路径:', result.reportPath)
+//     console.log('分析结果:', JSON.stringify(result.analysisResult, null, 2))
+//   } else {
+//     console.error('分析失败:', result.error)
+//   }
+// }
 
-exampleUsage()
+// exampleUsage()
 
 // 导出默认实例
 export default GitBranchAnalyzer
