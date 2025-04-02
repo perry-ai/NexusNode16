@@ -79,8 +79,6 @@ git clone https://github.com/perry-ai/NexusNode16.git
 # Install dependencies
 npm install
 
-# Configure environment variables
-cp .env.example .env
 ```
 
 ### Running

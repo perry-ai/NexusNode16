@@ -78,8 +78,6 @@ git clone https://github.com/perry-ai/NexusNode16.git
 # 安装依赖
 npm install
 
-# 配置环境变量
-cp .env.example .env
 ```
 
 ### 运行项目
