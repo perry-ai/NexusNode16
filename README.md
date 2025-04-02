@@ -94,13 +94,13 @@ npm start
 ## ⚙️ Configuration
 
 ### Temporary Directory
-Configure in `mytools.config.js`:
+Configure in `NexusNode16.config.js`:
 ```javascript
 tempDir: 'D://temp' // Temporary file storage directory
 ```
 
 ### Database Connection
-Configure in `mytools.config.js`:
+Configure in `NexusNode16.config.js`:
 ```javascript
 databases: [
   {

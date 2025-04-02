@@ -2,12 +2,12 @@ import ExcelJS from 'exceljs'
 import { join } from 'path'
 import fs from 'fs'
 import path from 'path'
-import mytoolsConfig from '../../../mytools.config.js'
+import NexusConfig from '../../../NexusNode16.config.js'
 
 import { cloneRepo, commitChanges, compareCommitDiffs, compareFileDiffs } from '../git/git-use-simple.js'
 
 
-const tempDir = mytoolsConfig.tempDir
+const tempDir = NexusConfig.tempDir
 
 // 读取 Excel 文件
 async function readExcelFile(filePath, position, newValue, sheet = 1) {
@@ -41,14 +41,14 @@ async function readExcelFile(filePath, position, newValue, sheet = 1) {
 }
 
 async function gitTest() {
-    const targetDir = mytoolsConfig.tempDir
+    const targetDir = NexusConfig.tempDir
     const timestamp = new Date()
         .toISOString()
         .replace(/[^0-9]/g, '')
         .slice(0, 14)
     const tempProName = 'gitrepo' + timestamp
     const tempProPath = path.join(targetDir, tempProName)
-    await cloneRepo('git@github.com:perry-ai/MyTools.git', 'main', tempProPath)
+    await cloneRepo('git@github.com:perry-ai/NexusNode16.git', 'main', tempProPath)
     // 先检出目标分支
     const comlog1 = await compareCommitDiffs(tempProPath, 'origin/test-init', 'origin/main', 100)
 

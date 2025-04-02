@@ -1,11 +1,11 @@
 // utils.js
 import mysql from 'mysql2/promise'
-import mytoolsConfig from '../../../mytools.config.js'
+import NexusConfig from '../../../NexusNode16.config.js'
 
 // 初始化
 const connectionPools = {}
 let isInitialized = false
-const DBConfigs = mytoolsConfig.databases
+const DBConfigs = NexusConfig.databases
 
 // 创建连接池
 async function createConnectionPools() {

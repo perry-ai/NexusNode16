@@ -1,11 +1,11 @@
 import { simpleGit } from 'simple-git'
 import ExcelJS from 'exceljs'
 import path from 'path'
-import mytoolsConfig from '../../mytools.config.js'
+import NexusConfig from '../../NexusNode16.config.js'
 import { compareCommitDiffs, compareFileDiffs } from '../api/git/git-use-simple.js'
 
 const git = simpleGit()
-const tempDir = mytoolsConfig.tempDir
+const tempDir = NexusConfig.tempDir
 
 /**
  * Git仓库分析工具类
@@ -397,7 +397,7 @@ export class GitBranchAnalyzer {
  * 使用示例
  */
 // async function exampleUsage() {
-//   const analyzer = new GitBranchAnalyzer('git@github.com:perry-ai/MyTools.git')
+//   const analyzer = new GitBranchAnalyzer('git@github.com:perry-ai/NexusConfig.git')
 //   const result = await analyzer.runAnalysis()
   
 //   if (result.success) {

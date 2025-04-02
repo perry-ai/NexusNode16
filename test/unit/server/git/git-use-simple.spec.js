@@ -1,7 +1,7 @@
 // 引入测试模块
 import * as git from '../../server/api/git/git-use-simple';
 import simpleGit from 'simple-git';
-import mytoolsConfig from '../../../mytools.config.js';
+import NexusConfig from '../../../NexusNode16.config.js';
 
 // 全局mock配置（可放在setupTests.js）
 jest.mock('simple-git', () => {
@@ -20,8 +20,8 @@ jest.mock('simple-git', () => {
   }));
 });
 
-// mock mytoolsConfig配置
-jest.mock('../../../mytools.config.js', () => ({
+// mock 配置
+jest.mock('../../../NexusNode16.config.js', () => ({
   tempDir: '/mock/temp/dir', // 模拟临时目录路径
 }));
 

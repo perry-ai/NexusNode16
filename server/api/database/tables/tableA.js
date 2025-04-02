@@ -25,7 +25,7 @@ async function selectQuery(req, res) {
   try {
     // 可选校验
     //     validateRequestBody(req)
-    //     validateEnv(req, mytoolsConfig.databases)
+    //     validateEnv(req, NexusConfig.databases)
 
     const { env, ...filters } = req.body
     const columns = await getColumnMetadata(table, env)
@@ -51,7 +51,7 @@ async function selectQuery(req, res) {
 async function updateByIdQuery(req, res) {
   try {
     validateRequestBody(req)
-    validateEnv(req, mytoolsConfig.databases)
+    validateEnv(req, NexusConfig.databases)
 
     const { env, ID, ...values } = req.body
     const columns = await getColumnMetadata(table, env)

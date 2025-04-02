@@ -93,13 +93,13 @@ npm start
 ## ⚙️ 配置说明
 
 ### 临时目录配置
-在`mytools.config.js`中配置:
+在`NexusNode16.config.js`中配置:
 ```javascript
 tempDir: 'D://temp' // 临时文件存储目录
 ```
 
 ### 数据库连接配置
-在`mytools.config.js`中配置:
+在`NexusNode16.config.js`中配置:
 ```javascript
 databases: [
   {

@@ -1,12 +1,12 @@
 import axios from 'axios'
-import mytoolsConfig from '../../../mytools.config.js'
+import NexusConfig from '../../../NexusNode16.config.js'
 
 const headersParams = {
   'Content-Type': 'application/json',
 }
 // 如果this.form.apikey非空，则不送Authorization
-if (mytoolsConfig?.apiKey) {
-  headersParams.Authorization = `Bearer ${mytoolsConfig?.apiKey}`
+if (NexusConfig?.apiKey) {
+  headersParams.Authorization = `Bearer ${NexusConfig?.apiKey}`
 }
 
 // 示例：非自动扫描注册，采用具体引入进行路由注册

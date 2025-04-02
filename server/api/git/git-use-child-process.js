@@ -2,8 +2,8 @@ import { exec } from 'child_process'
 // 确保目标目录存在，如果不存在则创建
 import fs from 'fs'
 import path from 'path'
-import mytoolsConfig from '../../../mytools.config.js' // 根据实际路径调整
-const targetDir = mytoolsConfig.tempDir
+import NexusConfig from '../../../NexusNode16.config.js' // 根据实际路径调整
+const targetDir = NexusConfig.tempDir
 
 function executeCommand(command, cwd) {
   return new Promise((resolve, reject) => {

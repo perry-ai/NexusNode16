@@ -4,9 +4,9 @@ import { join } from 'path'
 import { Document, Packer, Paragraph, TextRun } from 'docx'
 import fs from 'fs'
 import { createReadStream } from 'fs' // 需要引入文件流
-import mytoolsConfig from '../../../mytools.config.js'
+import NexusConfig from '../../../NexusNode16.config.js'
 
-const tempDir = mytoolsConfig.tempDir
+const tempDir = NexusConfig.tempDir
 
 // === Multer 配置 示例===
 const storage = multer.diskStorage({

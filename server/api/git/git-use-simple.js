@@ -1,6 +1,6 @@
 import simpleGit from 'simple-git'
 import path from 'path'
-import mytoolsConfig from '../../../mytools.config.js' // 根据实际路径调整
+import NexusConfig from '../../../NexusNode16.config.js' // 根据实际路径调整
 
 
 // 克隆远端仓库到指定目录
@@ -178,7 +178,7 @@ export async function compareFileDiffs(repoPath, fromRef, toRef) {
  * @returns
  */
 export async function simpleCreateTag(repoURL, branch) {
-  const targetDir = mytoolsConfig.tempDir
+  const targetDir = NexusConfig.tempDir
   const git = simpleGit()
   try {
     // yyyyMMddHHmmss形式的时间戳
@@ -212,14 +212,14 @@ export async function simpleCreateTag(repoURL, branch) {
 
 
 async function test() {
-  const targetDir = mytoolsConfig.tempDir
+  const targetDir = NexusConfig.tempDir
   const timestamp = new Date()
     .toISOString()
     .replace(/[^0-9]/g, '')
     .slice(0, 14)
   const tempProName = 'gitrepo' + timestamp
   const tempProPath = path.join(targetDir, tempProName)
-  await cloneRepo('git@github.com:perry-ai/MyTools.git', 'main', tempProPath)
+  await cloneRepo('git@github.com:perry-ai/NexusNode16.git', 'main', tempProPath)
   // 先检出目标分支
   const comlog1 = await compareCommitDiffs(tempProPath, 'origin/test-init', 'origin/main', 100)
 
