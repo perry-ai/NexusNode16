@@ -1,4 +1,4 @@
-# MyTools 🛠️ 
+# NexusNode16 🛠️ 
 [English](README.md)|中文版  
 [![Nuxt.js](https://img.shields.io/badge/Nuxt.js-00C58E?style=flat-square&logo=nuxt.js&logoColor=white)](https://nuxtjs.org/)
 [![Vue.js](https://img.shields.io/badge/Vue.js-4FC08D?style=flat-square&logo=vue.js&logoColor=white)](https://vuejs.org/)
@@ -8,7 +8,7 @@
 
 ## 🏗️ 项目概述
 
-> MyTools 是基于Node.js 16+构建的全栈开发工具集，采用模块化架构和丰富功能设计，旨在提升开发效率。✨
+> NexusNode16 是基于Node.js 16+构建的全栈开发工具集，采用模块化架构和丰富功能设计，旨在提升开发效率。✨
 
 核心亮点：
 - 💻 **全栈解决方案**：整合Nuxt.js前端与Express后端
@@ -73,7 +73,7 @@
 ### 安装步骤
 ```bash
 # 克隆仓库
-git clone https://github.com/perry-ai/MyTools.git
+git clone https://github.com/perry-ai/NexusNode16.git
 
 # 安装依赖
 npm install

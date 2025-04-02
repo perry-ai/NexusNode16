@@ -1,4 +1,4 @@
-# MyTools 🛠️ 
+# NexusNode16 🛠️ 
 English|[中文版](README_CN.md)
 
 [![Nuxt.js](https://img.shields.io/badge/Nuxt.js-00C58E?style=flat-square&logo=nuxt.js&logoColor=white)](https://nuxtjs.org/)
@@ -9,7 +9,7 @@ English|[中文版](README_CN.md)
 
 ## 🏗️ Project Overview
 
-> MyTools is a comprehensive full-stack development toolkit built on Node.js 16+, designed to boost your productivity with its modular architecture and rich feature set. 🚀
+> NexusNode16 is a comprehensive full-stack development toolkit built on Node.js 16+, designed to boost your productivity with its modular architecture and rich feature set. 🚀
 
 Key highlights:
 - 💻 **Full-stack Solution**: Combines Nuxt.js frontend with Express backend
@@ -74,7 +74,7 @@ Built with Nuxt.js and Express
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/perry-ai/MyTools.git
+git clone https://github.com/perry-ai/NexusNode16.git
 
 # Install dependencies
 npm install

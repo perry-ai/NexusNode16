@@ -39,7 +39,7 @@ export default [
     ),
     task: async () => {
       console.log('开始执行Git仓库分析任务:', new Date())
-      const analyzer = new GitBranchAnalyzer('git@github.com:perry-ai/MyTools.git')
+      const analyzer = new GitBranchAnalyzer('git@github.com:perry-ai/NexusNode16.git')
       const result = await analyzer.runAnalysis()
       if (result.success) {
         console.log('Git仓库分析完成，报告路径:', result.reportPath)
