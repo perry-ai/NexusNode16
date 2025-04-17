@@ -29,7 +29,7 @@ Built with Nuxt.js and Express
 ## ✨ Features
 
 - **Frontend**: 
-  - Nuxt.js (SPA mode) with Vue 3 Composition API
+  - Nuxt.js (SPA mode) with Vue 2
   - Element UI component library integration
   - Responsive layout support
   - Client-side routing and state management

@@ -28,7 +28,7 @@
 ## ✨ 功能特性
 
 - **前端**: 
-  - 基于Nuxt.js(SPA模式)和Vue 3组合式API
+  - 基于Nuxt.js(SPA模式)和Vue 2
   - 集成Element UI组件库
   - 支持响应式布局
   - 客户端路由和状态管理
