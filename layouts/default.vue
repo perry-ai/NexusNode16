@@ -1,18 +1,20 @@
 <template>
-  <div>
-    <TopNav class="top-nav" />
-    <div class="container">
+  <div class="app-container">
+    <div class="nav-container">
+      <Navigation />
+    </div>
+    <div class="content-container">
       <nuxt />
     </div>
   </div>
 </template>
 
 <script>
-import TopNav from '~/components/TopNav.vue'
+import Navigation from '~/components/Navigation.vue'
 
 export default {
   components: {
-    TopNav,
+    Navigation,
   },
 }
 </script>
@@ -78,18 +80,30 @@ body {
   background-color: #35495e;
 }
 
-.top-nav {
-  height: 60px;
-  /* 固定高度 */
-  background-color: #fff;
-  /* 可选：背景色 */
-  border-bottom: 1px solid #ebeef5;
-  /* 可选：底部边框 */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
 }
 
-.container {
-  height: calc(100vh - 60px);
-  /* height: 100vh; */
-  /* 确保父容器传递高度 */
+.nav-container {
+  width: 120px;
+  flex-shrink: 0;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  z-index: 100;
+  background: #fff;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.content-container {
+  flex: 1;
+  padding: 20px;
+  margin-left: 120px;
+  overflow: auto;
+  min-height: 100vh;
+  background: #f5f7fa;
 }
 </style>
