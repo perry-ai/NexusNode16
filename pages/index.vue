@@ -4,7 +4,7 @@
     <div>
       <logo />
       <h1 class="title">NexusNode16</h1>
-      <h2 class="subtitle">联结点拾陆</h2>
+      <h2 class="subtitle">联结点16</h2>
     </div>
   </div>
 </template>
